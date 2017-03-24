@@ -1,7 +1,9 @@
 '''
 Created on Mar 23, 2017
 
-@author: ArchWizard 
+@author: ArchWizard
+At the moment this is only a wrapper for bash however next it will be
+a wrapper for the minecraft server. Then the master I/O port for the minecraft server! 
 '''
 # Import Dependices
 import pickle
