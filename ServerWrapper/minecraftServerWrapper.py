@@ -20,8 +20,8 @@ minecraftLocation = pickleloader("minecraftLocation", UserVars)
 minecraftJarName = pickleloader("minecraftJarName", UserVars)
 Xms = pickleloader("Xms", UserVars)
 Xmx = pickleloader("Xmx", UserVars)
+#spawn the child process
 minecraftServer = pexpect.spawn("/bin/bash")
-minecraftServer.expect(".*\$ ")
 class Monitor(threading.Thread):
     def run(self):
             #Grab the stdout line as it becomes available
@@ -38,7 +38,7 @@ while True:
     #ask for user input
     command = input("\n Please enter a bash command >>> ")
     #allowing for a clear exit
-    if command == "exit" or "Exit" or "quit"or "Quit":
+    if command == "exit":
         Monitor()._stop()
         sys.exit("Exiting")
     #send the command to the server    
