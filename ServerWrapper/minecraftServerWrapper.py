@@ -20,7 +20,7 @@ minecraftLocation = pickleloader("minecraftLocation", UserVars)
 minecraftJarName = pickleloader("minecraftJarName", UserVars)
 Xms = pickleloader("Xms", UserVars)
 Xmx = pickleloader("Xmx", UserVars)
-#spawn the child process
+#Spawn the child process
 minecraftServer = pexpect.spawn("/bin/bash")
 class Monitor(threading.Thread):
     def run(self):
