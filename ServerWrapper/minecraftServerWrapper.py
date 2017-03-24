@@ -11,6 +11,8 @@ import subprocess
 import threading
 from time import sleep
 from Helpers.pickleloader import pickleloader
+import pexpect
+import sys
 #define where variables are
 UserVars = "../UserVariables.p"
 #extract Variables from pickle
@@ -18,30 +20,31 @@ minecraftLocation = pickleloader("minecraftLocation", UserVars)
 minecraftJarName = pickleloader("minecraftJarName", UserVars)
 Xms = pickleloader("Xms", UserVars)
 Xmx = pickleloader("Xmx", UserVars)
-#Create process
-process = subprocess.Popen("/bin/bash", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True )
-#p = subprocess.Popen("java -jar -Xms" + Xms, + " -Xmx" +Xmx + " " + minecraftLocation + minecraftJarName + " nogui", stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-#Define Monitor thread
+minecraftServer = pexpect.spawn("/bin/bash")
+minecraftServer.expect(".*\$ ")
 class Monitor(threading.Thread):
     def run(self):
             #Grab the stdout line as it becomes available
             #this will loop until the process terminates
-            while process.poll() is None:
-                mon = process.stdout.readline()
-                print(mon)
-#Same thing as above but for errors also                
-class Monerr(threading.Thread):
-    def run(self):
-            while process.poll() is None:
-                mon = process.stderr.readline()
-                print(mon)
-#start the threads
+            while minecraftServer is not None:
+                for line in minecraftServer:
+                    print(line)
+#Have Monitor thread exit on program exit
+Monitor.daemon = True
+#Start the Monitor thread
 Monitor().start()
-Monerr().start()
-#ask for input
-command = input("Please enter a command >>> ")
-#write the command to stdin
-process._stdin_write(command)
-# When the subprocess terminates there might be unconsumed output 
-# that still needs to be processed.
-print(process.stdout.read())
+#main debug loop
+while True:
+    #ask for user input
+    command = input("\n Please enter a bash command >>> ")
+    #allowing for a clear exit
+    if command == "exit" or "Exit" or "quit"or "Quit":
+        Monitor()._stop()
+        sys.exit("Exiting")
+    #send the command to the server    
+    minecraftServer.sendline(command)
+
+
+
+
+
