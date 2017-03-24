@@ -1,6 +1,6 @@
-#Project Emerald Spartan
+### Project Emerald Spartan
 Project Emerald Spartan aims to be a web based minecraft server management tool
-with that in mind. These are the current goals that i'm working towards
+with that in mind. These are the current goals that I'm working towards
 - [ ] web based console
 - [ ] web based control station
 - [ ] web based info screen
